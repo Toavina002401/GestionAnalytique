@@ -5,18 +5,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connexion {
-    public Connection dbConnect() {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/gestion_analytique"; 
-        String username = "root";  
-        String password = "patrick"; 
-        
+    public Connection dbConnect() throws Exception{
+        String jdbcUrl = "jdbc:mysql://localhost:3306/gestion_analytique";
+        String username = "root";
+        String password = "patrick";
+
         try {
-            // Retourner la connexion si elle réussit
-            return DriverManager.getConnection(jdbcUrl, username, password);
+            // Charger le pilote MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Établir la connexion
+            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            return connection;
+
         } catch (SQLException e) {
-            // Afficher un message d'erreur et relancer l'exception
-            System.err.println("Erreur de connexion à la base de données : " + e.getMessage());
-            throw new RuntimeException(e);
+            e.printStackTrace(); // Affiche l'erreur SQL
+            throw e; // Relance l'exception
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace(); // Affiche l'erreur de chargement du pilote
         }
+        return null; // Si aucune connexion n'a été établie
     }
+
 }

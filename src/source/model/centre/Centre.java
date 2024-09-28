@@ -13,6 +13,19 @@ public class Centre {
     private int id;
     private String libele;
 
+    public Centre() {
+
+    }
+
+    public Centre(String libele) {
+        this.setLibele(libele);
+    }
+    
+    public Centre(int id, String libele) {
+        this.setId(id); 
+        this.setLibele(libele);
+    }
+
     // Getters et setters
     public void setId(int id) {
         this.id = id;
@@ -53,7 +66,7 @@ public class Centre {
         }
     }
 
-    public boolean create() throws Exception {
+    public void create() throws Exception {
         Connexion con = new Connexion();
         String sql = "INSERT INTO centre (libele) VALUES (?)";
         Connection conn = con.dbConnect();
@@ -61,9 +74,8 @@ public class Centre {
         try {
 
             stmt.setString(1, this.libele);
-            int rowsInserted = stmt.executeUpdate();
+            stmt.execute();
             conn.close();
-            return rowsInserted > 0;
         } catch (SQLException e) {
             conn.close();
             throw e;

@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import source.model.centre.Centre;
-import source.model.unite.UniteOeuvre;
 
 @Controller
 public class TestController {
-    public TestController() {
-    }
 
     @GetMapping({ "/ajouterCentre" })
     public ModelAndView ajouterCentre() {
@@ -20,17 +17,36 @@ public class TestController {
         return mv;
     }
 
-    @PostMapping("/ajouterCentre")
-    public String ajouterCentre(@RequestParam("libele") String libele) {
-        Centre unite = new Centre();
-        unite.setLibele(libele);
-
+    @PostMapping({ "/ajouter" })
+    public ModelAndView ajouterCentre(@RequestParam("libele") String libele) {
+        Centre centre = new Centre();
+        centre.setLibele(libele);
+        String erreur = "";
         try {
-            unite.create();
-            return "redirect:/listeUnites"; // Redirection après l'ajout réussi
+            centre.create();
         } catch (Exception e) {
-            e.printStackTrace();
-            return "error"; // Page d'erreur à définir
+            erreur = e.getMessage();
         }
+        ModelAndView mv = new ModelAndView("test");
+        mv.addObject("erreur", erreur);
+        return mv;
+    }
+
+    @GetMapping("/getCentre")
+    public ModelAndView getCentre() {
+        Centre centre = new Centre();
+        String erreur = null;
+        try {
+            centre.getById(1);
+        } catch (Exception e) {
+            erreur = e.getMessage();
+            // TODO: handle exception
+        }
+
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("erreur", erreur);
+        mv.addObject("centre", centre);
+        return mv;
+
     }
 }
