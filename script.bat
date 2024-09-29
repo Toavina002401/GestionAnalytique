@@ -52,10 +52,16 @@ xcopy "%web%" "%desweb%" /E /I /Y
 echo Le copie du dossier %web% a ete effectuez avec succes dans %desweb%.
 
 rem Copie les sources dans le tempsrc
-for /r "src" %%f in (*.java) do copy "%%f" "%tempsrc%"
+rem Copie tous les fichiers .java du répertoire "src" vers "out"
+for /r "src" %%f in (*.java) do copy "%%f" "tempsrc"
 
-rem Compilation de tous les fichiers Java du répertoire tempsrc
-javac -cp "%temp%/WEB-INF/lib/*" -d "%temp%/WEB-INF/classes/" "%tempsrc%\*.java"
+rem Compile tous les fichiers Java dans "out" en spécifiant le classpath
+cd "tempsrc" 
+javac -cp "..\lib\*" -d "..\temp\WEB-INF\classes" *.java
+cd ..
+
+rem Crée le fichier JAR après compilation
+jar cfe "lib\front-controller.jar" mg.MainClass -C "temp\WEB-INF\classes" .
 
 echo Compilation des fichiers Java dans %tempsrc% terminee. Les fichiers .class sont stockes dans %temp%/WEB-INF/classes/.
 
@@ -71,4 +77,9 @@ move "%projet%" "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps
 
 echo Deploiment effectuer avec succes
 
-pause
+if exist "tempsrc" (
+    rmdir /s /q "tempsrc"
+)
+if exist "temp" (
+    rmdir /s /q "temp"
+)
