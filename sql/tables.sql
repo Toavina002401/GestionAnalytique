@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS charge(
     id_unite INTEGER REFERENCES unite_oeuvre(id),
     PRIMARY KEY(id)
 );
+
 CREATE TABLE centre_charge(
     id INTEGER AUTO_INCREMENT,
     id_centre INTEGER REFERENCES centre(id),
