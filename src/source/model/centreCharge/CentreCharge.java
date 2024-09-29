@@ -205,7 +205,6 @@ public class CentreCharge {
         
         try {
             stmt.setString(1, String.valueOf(variable));
-
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 prixList.add(rs.getDouble("somme_prix"));
@@ -215,13 +214,16 @@ public class CentreCharge {
         } finally {
             conn.close();
         }
-        
-        // Convertir la liste en tableau de doubles
+
+        // Vérification de la taille de la liste avant conversion
+        if (prixList.isEmpty()) {
+            return new double[Centre.getAllStatic().size()]; 
+        }
+
         double[] prixArray = new double[prixList.size()];
         for (int i = 0; i < prixList.size(); i++) {
             prixArray[i] = prixList.get(i);
         }
-        
         return prixArray;
     }
 

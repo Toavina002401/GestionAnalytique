@@ -128,6 +128,20 @@
                 <td><%= (new Charge()).totalPrixCharge() %></td>
                 <td></td>
                 <td></td>
+                <%
+                    double[] prixVariable = (double[])request.getAttribute("totalVariableCentre");
+                    for (int i = 0; i < centres.size(); i++) {  
+                %>
+                <td colspan="3" style="text-align: center;">
+                    <%
+                        try{
+                            out.print(prixVariable[i]);
+                        } catch (Exception e) {
+                            out.print("Erreur: " + e.getMessage());
+                        }
+                    %>
+                </td>
+                <% } %>
             </tr>
         </tfoot>
     </table>

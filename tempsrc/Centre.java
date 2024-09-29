@@ -134,4 +134,26 @@ public class Centre {
         }
         return centres;
     }
+
+    public static List<Centre> getAllStatic() throws Exception {
+        Connexion con = new Connexion();
+        List<Centre> centres = new ArrayList<>();
+        String sql = "SELECT * FROM centre";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Centre centre = new Centre();
+                centre.setId(rs.getInt("id"));
+                centre.setLibele(rs.getString("libele"));
+                centres.add(centre);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+        return centres;
+    }
 }
