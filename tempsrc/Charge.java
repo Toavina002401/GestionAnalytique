@@ -92,6 +92,10 @@ public class Charge {
         this.uniteOeuvre = uo;
     }
 
+    public UniteOeuvre getUniteOeuvre() throws Exception {
+        return uniteOeuvre;
+    }
+
     // CRUD operations
 
     public void getById(int id) throws Exception {
@@ -197,5 +201,14 @@ public class Charge {
             throw e;
         }
         return charges;
+    }
+
+    public double totalPrixCharge() throws Exception{
+        double valiny = 0;
+        List<Charge> liste = this.getAll();
+        for (Charge charge : liste) {
+            valiny += charge.getPrix();
+        }
+        return valiny;
     }
 }

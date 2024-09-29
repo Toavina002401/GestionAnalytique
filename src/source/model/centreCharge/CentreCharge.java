@@ -189,4 +189,41 @@ public class CentreCharge {
             conn.close();
         }
     }
+
+    public double[] getSommePrixParCentre(char variable) throws Exception {
+        Connexion con = new Connexion();
+        String sql = "SELECT SUM(cc.prix) AS somme_prix " +
+                    "FROM centre_charge cc " +
+                    "JOIN charge ch ON cc.id_charge = ch.id " +
+                    "WHERE ch.nature = ? " +
+                    "GROUP BY cc.id_centre";
+        
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        
+        List<Double> prixList = new ArrayList<>();
+        
+        try {
+            stmt.setString(1, String.valueOf(variable));
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                prixList.add(rs.getDouble("somme_prix"));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+        
+        // Convertir la liste en tableau de doubles
+        double[] prixArray = new double[prixList.size()];
+        for (int i = 0; i < prixList.size(); i++) {
+            prixArray[i] = prixList.get(i);
+        }
+        
+        return prixArray;
+    }
+
+
 }

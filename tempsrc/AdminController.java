@@ -70,6 +70,7 @@ public class AdminController {
             prixTotal = prixTotal + Double.parseDouble(prix);
         }
         newCharge.setPrix(prixTotal);
+        newCharge.create();
         double totalPourcentage = 0;
         boolean isDirect = false;
         Centre getDirect = new Centre();
@@ -84,7 +85,7 @@ public class AdminController {
             CentreCharge newCentreCharge = new CentreCharge(0, centre, newCharge, Double.parseDouble(prix), Double.parseDouble(pourcentage));
             newCentreCharge.create();
         }   
-        newCharge.create();
+
         String reponse = "Le rubrique du nom "+rubrique+" est une charge ";
         if (totalPourcentage == 0) {
             reponse += "non incorporable car tous les pourcentages pour chaque centre sont egale a 0% .";
@@ -92,10 +93,31 @@ public class AdminController {
             reponse += "incorporable mais c'est aussi une charge ";
             if (isDirect) {
                 reponse += " direct car sont pourcentage est de 100% dans le centre "+ getDirect.getLibele() + " avec une prix de " + prixTotal + " AR ."; 
+            }else{
+                reponse += "indirect car les pourcentage sont partagée par plus de 2 centre";
             }
         }
         ModelAndView mav = new ModelAndView("tableaux");
         mav.addObject("reponse", reponse);
+        return mav;
+    }
+
+    @GetMapping("/voir")
+    public ModelAndView voirPlus() throws Exception {
+        Charge charge = new Charge();
+        List<Charge> allCharge = charge.getAll();
+        CentreCharge centreCharge = new CentreCharge();
+        List<CentreCharge> allCentreCharge = centreCharge.getAll();
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
+        double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
+        ModelAndView mav = new ModelAndView("voirplus");
+        mav.addObject("allCharge", allCharge);
+        mav.addObject("allCentreCharge", allCentreCharge);
+        mav.addObject("listeCentre", listeCentre);
+        mav.addObject("totalVariableCentre", totalVariableCentre);
+        mav.addObject("totalFixeCentre", totalFixeCentre);
         return mav;
     }
 

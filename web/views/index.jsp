@@ -14,6 +14,9 @@
 </head>
 <body>
     <center>
+        <h1>
+            <a href="voir">Voir Tout</a>
+        </h1>
         <h1>Insertion charge possible</h1>
 
         <form action="addCharge" method="get">
