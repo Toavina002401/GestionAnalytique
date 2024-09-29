@@ -34,15 +34,15 @@
             <div>
                 <label for="nature">Nature</label>
                 <select name="nature" id="nature">
-                    <option value="0">Fixe</option>
-                    <option value="1">Variable</option>
+                    <option value="F">Fixe</option>
+                    <option value="V">Variable</option>
                 </select>
             </div>
             <% for (Centre centre : centres) { %>
                 <div>
                     <label for="<%= centre.getLibele() %>"><%= centre.getLibele() %></label>
                     <input type="text" name="<%= centre.getId() %>_prix" id="<%= centre.getId() %>_prix" placeholder="prix">
-                    <input type="text" name="<%= centre.getId() %>_pourcentage" id="<%= centre.getId() %>_pourcentage" placeholder="pourcentage">
+                    <input type="text" name="<%= centre.getId() %>_pourcentage" id="<%= centre.getId() %>_pourcentage" placeholder="pourcentage" value="0" oninput="validatePourcentages()">
                 </div>
             <% } %>
             <input type="submit" value="Inserer">
@@ -69,5 +69,42 @@
             </form>
         </div>
     </center>
+
+    <script>
+        function validatePourcentages() {
+            var inputs = document.querySelectorAll('input[id$="_pourcentage"]');
+            var totalPourcentage = 0;
+            var hasError = false;
+        
+            inputs.forEach(function(input) {
+                var inputValue = input.value.trim();
+                if (inputValue === "") {
+                    return;
+                }
+        
+                if (!/^\d*\.?\d*$/.test(inputValue)) {
+                    alert("Veuillez entrer un pourcentage valide (nombres uniquement avec un point pour les décimales).");
+                    input.value = "";
+                    hasError = true;
+                    return;
+                }
+
+                totalPourcentage += parseFloat(inputValue) || 0;
+            });
+        
+            if (totalPourcentage > 100) {
+                alert("Le total des pourcentages ne doit pas dépasser 100 %.");
+                var activeInput = document.activeElement;
+                if (activeInput && activeInput.id.endsWith("_pourcentage")) {
+                    activeInput.value = "";
+                }
+            }
+        
+            if (hasError) {
+                return;
+            }
+        }
+        
+    </script>
 </body>
 </html>
