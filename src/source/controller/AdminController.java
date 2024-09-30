@@ -64,7 +64,13 @@ public class AdminController {
 
         Centre newcentre = new Centre();
         Charge newCharge = new Charge(1, rubrique, Double.parseDouble(prixname), nature.charAt(0), Integer.parseInt(unite));
+        double prixTotal = 0;
         List<Centre> centres = newcentre.getAll();
+        for (Centre centre : centres) {
+            String prix = request.getParameter(centre.getId() + "_prix");
+            prixTotal = prixTotal + Double.parseDouble(prix);
+        }
+        newCharge.setPrix(prixTotal);
         newCharge.create();
         double totalPourcentage = 0;
         boolean isDirect = false;
