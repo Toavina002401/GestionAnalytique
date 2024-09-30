@@ -60,19 +60,15 @@ public class AdminController {
         String rubrique = request.getParameter("rubrique");
         String unite = request.getParameter("unite");
         String nature = request.getParameter("nature");
+        String prixname = request.getParameter("prix");
 
         Centre newcentre = new Centre();
-        Charge newCharge = new Charge(1, rubrique, 0, nature.charAt(0), Integer.parseInt(unite));
-        double prixTotal = 0;
+        Charge newCharge = new Charge(1, rubrique, Double.parseDouble(prixname), nature.charAt(0), Integer.parseInt(unite));
         List<Centre> centres = newcentre.getAll();
-        for (Centre centre : centres) {
-            String prix = request.getParameter(centre.getId() + "_prix");
-            prixTotal = prixTotal + Double.parseDouble(prix);
-        }
-        newCharge.setPrix(prixTotal);
         newCharge.create();
         double totalPourcentage = 0;
         boolean isDirect = false;
+        Charge vaovao = Charge.getById(rubrique);
         Centre getDirect = new Centre();
         for (Centre centre : centres) {
             String prix = request.getParameter(centre.getId() + "_prix");
@@ -82,7 +78,7 @@ public class AdminController {
                isDirect = true; 
                getDirect = centre;
             }
-            CentreCharge newCentreCharge = new CentreCharge(0, centre, newCharge, Double.parseDouble(prix), Double.parseDouble(pourcentage));
+            CentreCharge newCentreCharge = new CentreCharge(0, centre, vaovao, Double.parseDouble(prix), Double.parseDouble(pourcentage));
             newCentreCharge.create();
         }   
 
@@ -92,7 +88,7 @@ public class AdminController {
         }else{
             reponse += "incorporable mais c'est aussi une charge ";
             if (isDirect) {
-                reponse += " direct car sont pourcentage est de 100% dans le centre "+ getDirect.getLibele() + " avec une prix de " + prixTotal + " AR ."; 
+                reponse += " direct car sont pourcentage est de 100% dans le centre "+ getDirect.getLibele() + " avec une prix de " + prixname + " AR ."; 
             }else{
                 reponse += "indirect car les pourcentage sont partagée par plus de 2 centre";
             }

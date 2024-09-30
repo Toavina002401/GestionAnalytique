@@ -124,18 +124,36 @@
         </tbody>
         <tfoot>
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <%
+                    double[] prixVariable = (double[])request.getAttribute("totalVariableCentre");
+                    double[] prixFixe = (double[])request.getAttribute("totalFixeCentre");
+                    for (int i = 0; i < centres.size(); i++) { 
+                        if(centres.size()-1 == 0){ 
+                            break;
+                        } else {  
+                %>
+                        <td></td>
+                        <td><%= prixFixe[i] %></td>
+                        <td><%= prixVariable[i] %></td>
+                    <% }%>
+                <% } %>
+            </tr>
+            <tr>
                 <td>Total</td>
                 <td><%= (new Charge()).totalPrixCharge() %></td>
                 <td></td>
                 <td></td>
                 <%
-                    double[] prixVariable = (double[])request.getAttribute("totalVariableCentre");
                     for (int i = 0; i < centres.size(); i++) {  
                 %>
                 <td colspan="3" style="text-align: center;">
                     <%
                         try{
-                            out.print(prixVariable[i]);
+                            out.print(prixVariable[i] + prixFixe[i]);
                         } catch (Exception e) {
                             out.print("Erreur: " + e.getMessage());
                         }

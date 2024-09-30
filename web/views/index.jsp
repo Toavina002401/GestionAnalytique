@@ -41,6 +41,10 @@
                     <option value="V">Variable</option>
                 </select>
             </div>
+            <div>
+                <label for="prix">Prix</label>
+                <input type="text" name="prix" id="prix">
+            </div>
             <% for (Centre centre : centres) { %>
                 <div>
                     <label for="<%= centre.getLibele() %>"><%= centre.getLibele() %></label>

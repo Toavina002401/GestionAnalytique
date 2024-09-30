@@ -121,6 +121,31 @@ public class Charge {
         }
     }
 
+    public static Charge getById(String libeles) throws Exception {
+        Charge cha = new Charge();
+        Connexion con = new Connexion();
+        String sql = "SELECT * FROM charge WHERE rubrique = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setString(1, libeles);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                cha.setId(rs.getInt("id"));
+                cha.setRubrique(rs.getString("rubrique"));
+                cha.setPrix(rs.getDouble("prix"));
+                cha.setNature(rs.getString("nature").charAt(0));
+                cha.setUniteOeuvre(rs.getInt("id_unite"));
+            }
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+        return cha;
+    }
+
     public void create() throws Exception {
         Connexion con = new Connexion();
         String sql = "INSERT INTO charge (rubrique, prix, nature, id_unite) VALUES (?, ?, ?, ?)";
