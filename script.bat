@@ -30,11 +30,13 @@ set xml=web.xml
 set dispatche=dispatcher-servlet.xml
 set web=web
 set src=src
+set assets=assets
 
 rem Le destination de chaque dossier
 set deslibrairie=%temp%/WEB-INF/lib/
 set desxml=%temp%/WEB-INF/
 set desweb=%temp%/WEB-INF/
+set desassets=%temp%/assets/
 
 rem Copie le dossier librairie dans le dossier de destination
 xcopy "%librairie%" "%deslibrairie%" /E /I /Y
@@ -49,6 +51,8 @@ echo Le fichier %xml% et %dispatche% a ete copie dans %desxml%.
 
 rem Copie le dossier web dans le dossier de destination
 xcopy "%web%" "%desweb%" /E /I /Y
+xcopy "%assets%" "%desassets%" /E /I /Y
+echo Le copie du dossier %assets% a ete effectuez avec succes dans %desassets%.
 echo Le copie du dossier %web% a ete effectuez avec succes dans %desweb%.
 
 rem Copie les sources dans le tempsrc
