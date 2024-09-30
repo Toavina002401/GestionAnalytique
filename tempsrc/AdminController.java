@@ -122,7 +122,7 @@ public class AdminController {
         boolean isDirect = false;
         Charge vaovao = Charge.getById(rubrique);
         Centre getDirect = new Centre();
-        
+
         for (Centre centre : centres) {
             String prix = request.getParameter(centre.getId() + "_prix");
             String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
@@ -147,7 +147,15 @@ public class AdminController {
                 reponse += "indirect car les pourcentage sont partagée par plus de 2 centre";
             }
         }
-        ModelAndView mav = new ModelAndView("tableaux");
+
+
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        UniteOeuvre uniteOeuvre = new UniteOeuvre();
+        List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
+        ModelAndView mav = new ModelAndView("insertion");
+        mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
+        mav.addObject("listeCentre", listeCentre);
         mav.addObject("reponse", reponse);
         return mav;
     }
