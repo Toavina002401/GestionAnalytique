@@ -226,22 +226,20 @@
         <!-- <div class="modal-content"  > -->
         <form class="forms-sample" id="repartitionForm" >
           <% 
-            int i = 1;
             for (Centre centre : centres) { 
           %>
             <div class="form-group mt-2">
-                <label for="c<%= i %>" style="display: flex; align-items: center;"> <%= centre.getLibele() %>:
-                    <div class="text-primary output ml-2" id="outputC<%= i %>" ></div>
+                <label for="c<%= centre.getId() %>" style="display: flex; align-items: center;"> <%= centre.getLibele() %>:
+                    <div class="text-primary output ml-2" id="outputC<%= centre.getId() %>" ></div>
                 </label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text">%</span>
                     </div>
-                    <input type="number" class="form-control" id="c<%= i %>" placeholder="" min="0" >
+                    <input type="number" class="form-control" id="c<%= centre.getId() %>" placeholder="" min="0" >
                 </div>
             </div>
           <%
-              i++;
             } 
           %>
             <div class="error mb-3" id="error" style="display: none;"></div>

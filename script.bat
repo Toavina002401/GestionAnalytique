@@ -1,7 +1,7 @@
 @echo off
 
 rem Récuperation des arguments
-set nameProject=%~1
+set nameProject="Farin"
 
 rem Chemin vers repertoire de temp
 set temp=temp
@@ -71,7 +71,7 @@ jar -cvf "%projet%" -C "%temp%" .
 echo Le fichier WAR a ete cree : %projet%
 
 rem Déplace le fichier WAR vers le nouveau dossier
-move "%projet%" "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps\"
+move "%projet%" "C:\Program Files\Apache Software Foundation\Tomcat 10.1_Tomcat10.1.7\webapps"
 
 echo Deploiment effectuer avec succes
 

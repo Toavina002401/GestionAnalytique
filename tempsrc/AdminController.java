@@ -114,6 +114,9 @@ public class AdminController {
         List<Centre> centres = newcentre.getAll();
         for (Centre centre : centres) {
             String prix = request.getParameter(centre.getId() + "_prix");
+            // if (true) {
+            //     throw new IllegalArgumentException("5 --rubrique :"+prix+"-- unite :"+centre.getId()+"---nature :"+nature +"prix :"+ prixname );
+            // }
             prixTotal = prixTotal + Double.parseDouble(prix);
         }
         newCharge.setPrix(prixTotal);
@@ -124,6 +127,7 @@ public class AdminController {
         Centre getDirect = new Centre();
         
         for (Centre centre : centres) {
+
             String prix = request.getParameter(centre.getId() + "_prix");
             String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
             totalPourcentage = totalPourcentage + Double.parseDouble(pourcentage);
