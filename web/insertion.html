@@ -240,6 +240,7 @@
         <!-- <div class="modal-content"  > -->
         <form class="forms-sample" id="repartitionForm" >
 
+
             <div class="form-group mt-2">
                 <label for="c1" style="display: flex; align-items: center;"> Administration :
                     <div class="text-primary output ml-2" id="outputC1" ></div>
@@ -251,6 +252,8 @@
                     <input type="number" class="form-control" id="c1" placeholder="" min="0" >
                 </div>
             </div>
+
+
             <div class="form-group">
                 <label for="c2" style="display: flex; align-items: center;"> Usine :
                     <div class="text-primary output ml-2" id="outputC2"></div>
@@ -385,10 +388,13 @@
         // alert("Formulaire soumis avec succès !");
 
         let pourcentageHtml = '<h5>Répartition du montant par centre :</h5>';
-        centreInputs.forEach((input, index) => {
-            const val = input.value === '' ? 0 : parseFloat(input.value);
-            const centreLabel = document.querySelector(`label[for="c${index+1}"]`).innerText;
+        centreInputs.forEach(input => {
+            const inputId = input.id; // Exemple: "c2"
+            const index = inputId.substring(1); // Extrait la partie après 'c', ici "2"
 
+            const val = input.value === '' ? 0 : parseFloat(input.value);
+
+            const centreLabel = document.querySelector(`label[for="c${index+1}"]`).innerText;
 
  
             // Générer un input de type text pour chaque pourcentage
