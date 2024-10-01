@@ -30,36 +30,40 @@ set xml=web.xml
 set dispatche=dispatcher-servlet.xml
 set web=web
 set src=src
-set assets=assets
 
 rem Le destination de chaque dossier
 set deslibrairie=%temp%/WEB-INF/lib/
 set desxml=%temp%/WEB-INF/
 set desweb=%temp%/WEB-INF/
-set desassets=%temp%/assets/
+
+rem Creation du dossier WEB-INF/classes pour les fichiers compilés
+mkdir "%temp%/WEB-INF/classes"
 
 rem Copie le dossier librairie dans le dossier de destination
 xcopy "%librairie%" "%deslibrairie%" /E /I /Y
 echo Le copie du dossier %librairie% a ete effectuez avec succes dans %deslibrairie%.
 
-rem Copie les fichier .xml vers le dossier de destination
+rem Copie les fichiers .xml vers le dossier de destination
 copy "%xml%" "%desxml%"
 copy "%dispatche%" "%desxml%"
 
-echo Le fichier %xml% et %dispatche% a ete copie dans %desxml%.
-
+echo Le fichier %xml% et %dispatche% ont ete copies dans %desxml%.
 
 rem Copie le dossier web dans le dossier de destination
 xcopy "%web%" "%desweb%" /E /I /Y
-xcopy "%assets%" "%desassets%" /E /I /Y
-echo Le copie du dossier %assets% a ete effectuez avec succes dans %desassets%.
 echo Le copie du dossier %web% a ete effectuez avec succes dans %desweb%.
 
 rem Copie les sources dans le tempsrc
-for /r "src" %%f in (*.java) do copy "%%f" "%tempsrc%"
+rem Copie tous les fichiers .java du répertoire "src" vers "out"
+for /r "src" %%f in (*.java) do copy "%%f" "tempsrc"
 
-rem Compilation de tous les fichiers Java du répertoire tempsrc
-javac -cp "%temp%/WEB-INF/lib/*" -d "%temp%/WEB-INF/classes/" "%tempsrc%\*.java"
+rem Compile tous les fichiers Java dans "tempsrc" en spécifiant le classpath
+cd "tempsrc" 
+javac -cp "..\lib\*" -d "..\temp\WEB-INF\classes" *.java
+cd ..
+
+rem Crée le fichier JAR après compilation
+jar cfe "lib\front-controller.jar" mg.MainClass -C "temp\WEB-INF\classes" .
 
 echo Compilation des fichiers Java dans %tempsrc% terminee. Les fichiers .class sont stockes dans %temp%/WEB-INF/classes/.
 
@@ -70,9 +74,14 @@ jar -cvf "%projet%" -C "%temp%" .
 
 echo Le fichier WAR a ete cree : %projet%
 
-rem Déplace le fichier WAR vers le nouveau dossier
+rem Déplace le fichier WAR vers le dossier de Tomcat
 move "%projet%" "C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps\"
 
-echo Deploiment effectuer avec succes
+echo Deploiement effectuer avec succes
 
-pause
+if exist "tempsrc" (
+    rmdir /s /q "tempsrc"
+)
+if exist "temp" (
+    rmdir /s /q "temp"
+)
