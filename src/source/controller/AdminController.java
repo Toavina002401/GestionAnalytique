@@ -1,8 +1,6 @@
 package source.controller;
 
 import java.util.*;
-import java.lang.Integer;
-
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +15,6 @@ import source.model.charge.Charge;
 
 @Controller
 public class AdminController {
-    // @GetMapping("/")
-    // public ModelAndView index() throws Exception{
-    //     UniteOeuvre uniteOeuvre = new UniteOeuvre();
-    //     List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
-    //     Centre centre = new Centre();
-    //     List<Centre> listeCentre = centre.getAll();
-    //     ModelAndView mav = new ModelAndView("index");
-    //     mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
-    //     mav.addObject("listeCentre", listeCentre);
-    //     return mav;
-    // }
 
     @GetMapping("/")
     public ModelAndView index() throws Exception{
@@ -125,6 +112,9 @@ public class AdminController {
 
         for (Centre centre : centres) {
             String prix = request.getParameter(centre.getId() + "_prix");
+            if (prix==null) {
+                break;
+            } 
             String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
             totalPourcentage = totalPourcentage + Double.parseDouble(pourcentage);
             
@@ -135,6 +125,8 @@ public class AdminController {
             CentreCharge newCentreCharge = new CentreCharge(0, centre, vaovao, Double.parseDouble(prix), Double.parseDouble(pourcentage));
             newCentreCharge.create();
         } 
+
+
    
         String reponse = "Le rubrique du nom "+rubrique+" est une charge ";
         if (totalPourcentage == 0) {
@@ -157,6 +149,26 @@ public class AdminController {
         mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
         mav.addObject("listeCentre", listeCentre);
         mav.addObject("reponse", reponse);
+        return mav;
+    }
+
+
+    @GetMapping("repartition")
+    public ModelAndView repartition() throws Exception{
+        Charge charge = new Charge();
+        List<Charge> allCharge = charge.getAll();
+        CentreCharge centreCharge = new CentreCharge();
+        List<CentreCharge> allCentreCharge = centreCharge.getAll();
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
+        double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
+        ModelAndView mav = new ModelAndView("repartition");
+        mav.addObject("allCharge", allCharge);
+        mav.addObject("allCentreCharge", allCentreCharge);
+        mav.addObject("listeCentre", listeCentre);
+        mav.addObject("totalVariableCentre", totalVariableCentre);
+        mav.addObject("totalFixeCentre", totalFixeCentre);
         return mav;
     }
 

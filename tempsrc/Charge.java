@@ -26,77 +26,13 @@ public class Charge {
         this.setNature(nature);
         this.setUniteOeuvre(idUnite);
     }
+
     public Charge(int id, String rubrique, double prix, char nature, UniteOeuvre unite) {
         this.setId(id);
         this.setRubrique(rubrique);
         this.setNature(nature);
         this.setUniteOeuvre(unite);
     }
-
-
-    // Getters et setters
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setRubrique(String rubrique) {
-        this.rubrique = rubrique;
-    }
-
-    public String getRubrique() {
-        return rubrique;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public void setPrix(String prix) throws Exception {
-        try {
-            double v = Double.parseDouble(prix);
-            this.setPrix(v);
-        } catch (NumberFormatException e) {
-            throw new Exception("Le prix ne doit contenir que des chiffres");
-        }
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setNature(char nature) {
-        this.nature = nature;
-    }
-
-    public char getNature() {
-        return nature;
-    }
-
-    public void setUniteOeuvre(UniteOeuvre uniteOeuvre) {
-        this.uniteOeuvre = uniteOeuvre;
-    }
-
-    public void setUniteOeuvre(int id) throws Exception {
-        UniteOeuvre u = new UniteOeuvre();
-        u.getById(id);
-        this.setUniteOeuvre(u);
-    }
-
-    public void getUniteOeuvre(int id) throws Exception {
-        UniteOeuvre uo = new UniteOeuvre();
-        uo.getById(id);
-        this.uniteOeuvre = uo;
-    }
-
-    public UniteOeuvre getUniteOeuvre() throws Exception {
-        return uniteOeuvre;
-    }
-
-    // CRUD operations
 
     public void getById(int id) throws Exception {
         Connexion con = new Connexion();
@@ -146,6 +82,62 @@ public class Charge {
         return cha;
     }
 
+    // Getters et setters
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setRubrique(String rubrique) {
+        this.rubrique = rubrique;
+    }
+
+    public String getRubrique() {
+        return rubrique;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
+    public void setPrix(String prix) throws Exception {
+        try {
+            double v = Double.parseDouble(prix);
+            this.setPrix(v);
+        } catch (NumberFormatException e) {
+            throw new Exception("Le prix ne doit contenir que des chiffres");
+        }
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setNature(char nature) {
+        this.nature = nature;
+    }
+
+    public char getNature() {
+        return nature;
+    }
+
+    public void setUniteOeuvre(UniteOeuvre uniteOeuvre) {
+        this.uniteOeuvre = uniteOeuvre;
+    }
+
+    public void setUniteOeuvre(int unite)throws Exception{
+        UniteOeuvre uni = new UniteOeuvre();
+        uni.getById(unite);
+        this.uniteOeuvre = uni;
+    }
+
+    public UniteOeuvre getUniteOeuvre() throws Exception {
+        return uniteOeuvre;
+    }
+
     public void create() throws Exception {
         Connexion con = new Connexion();
         String sql = "INSERT INTO charge (rubrique, prix, nature, id_unite) VALUES (?, ?, ?, ?)";
@@ -157,6 +149,24 @@ public class Charge {
             stmt.setString(3, String.valueOf(this.nature));
             stmt.setInt(4, this.uniteOeuvre.getId());
 
+            stmt.execute();
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+    }
+
+    public void save(String rubrique , double prix , char nature , int oeuvre) throws Exception {
+        Connexion con = new Connexion();
+        String sql = "INSERT INTO charge (rubrique, prix, nature, id_unite) VALUES (?, ?, ?, ?)";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setString(1, rubrique);
+            stmt.setDouble(2, prix);
+            stmt.setString(3, String.valueOf(nature));
+            stmt.setInt(4, oeuvre);
             stmt.execute();
             conn.close();
         } catch (SQLException e) {
@@ -217,7 +227,6 @@ public class Charge {
                 charge.setPrix(rs.getDouble("prix"));
                 charge.setNature(rs.getString("nature").charAt(0));
                 charge.setUniteOeuvre(rs.getInt("id_unite"));
-
                 charges.add(charge);
             }
             conn.close();

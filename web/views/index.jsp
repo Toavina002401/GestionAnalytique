@@ -87,10 +87,15 @@
               <span class="menu-title">Insertion centre</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="repartition">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Répartition</span>
+            </a>
+          </li>
         </ul>
       </nav>
 <!-- FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
-
 
 
 
@@ -266,51 +271,6 @@
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Tableau de répartition pour le production et la distrubition</h4>
-                  <p class="card-description">
-                    production <code> Far'in Company</code>
-                  </p>
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                              <th>Repartition ADM/DISTR</th>
-                              <th>Cout direct</th>
-                              <th>Cles</th>
-                              <th>ADM/DISTR</th>
-                              <th>Cout total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Total Usine</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>Total plantation</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                        </tbody>
-                      <tfoot>
-                      </tfoot>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
         </div>
 <!--FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>

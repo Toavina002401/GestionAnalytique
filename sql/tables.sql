@@ -31,4 +31,3 @@ CREATE TABLE centre_charge(
     pourcentage DECIMAL(5,2),
     PRIMARY KEY(id)
 );
-

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
 import java.util.ArrayList;
 
 
@@ -60,6 +61,28 @@ public class UniteOeuvre {
             conn.close();
             throw e;
         }
+    }
+
+    public static int getById(String unite) throws Exception {
+        int valiny = 0;
+        Connexion con = new Connexion();
+        String sql = "SELECT id FROM unite_oeuvre WHERE libele = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+
+            stmt.setString(1, unite);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                valiny = rs.getInt(1);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+        return valiny;
     }
     
     public void create() throws Exception {

@@ -86,10 +86,15 @@
               <span class="menu-title">Insertion centre</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="repartition">
+              <i class="icon-paper menu-icon"></i>
+              <span class="menu-title">Répartition</span>
+            </a>
+          </li>
         </ul>
       </nav>
 <!-- FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
-
 
 
 
