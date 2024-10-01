@@ -227,5 +227,21 @@ public class CentreCharge {
         return prixArray;
     }
 
+    public boolean deleteFromCharge(int idCharge) throws Exception {
+        Connexion con = new Connexion();
+        String sql = "DELETE FROM centre_charge WHERE id_charge = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setInt(1, idCharge);
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+    }
+
 
 }

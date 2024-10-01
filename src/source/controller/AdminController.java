@@ -172,4 +172,31 @@ public class AdminController {
         return mav;
     }
 
+
+    @GetMapping("/supr")
+    public ModelAndView supprimer(@RequestParam("id") int idCharge) throws Exception{
+        CentreCharge supCentreCharge = new CentreCharge();
+        supCentreCharge.deleteFromCharge(idCharge);
+        Charge supCharge = new Charge();
+        supCharge.getById(idCharge);
+        supCharge.delete();
+
+
+        Charge charge = new Charge();
+        List<Charge> allCharge = charge.getAll();
+        CentreCharge centreCharge = new CentreCharge();
+        List<CentreCharge> allCentreCharge = centreCharge.getAll();
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
+        double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("allCharge", allCharge);
+        mav.addObject("allCentreCharge", allCentreCharge);
+        mav.addObject("listeCentre", listeCentre);
+        mav.addObject("totalVariableCentre", totalVariableCentre);
+        mav.addObject("totalFixeCentre", totalFixeCentre);
+        return mav;
+    }
+
 }

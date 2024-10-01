@@ -1,3 +1,5 @@
+DROP DATABASE gestion_analytique;
+
 CREATE DATABASE gestion_analytique;
 
 USE gestion_analytique;

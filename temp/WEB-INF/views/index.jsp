@@ -143,6 +143,7 @@
                             <%
                             }
                             %>
+                            <th rowspan="2">Action</th>
                         </tr>
                         <tr>
                             <%
@@ -220,6 +221,11 @@
                                   }
                               }
                               %>
+                              <td>
+                                <a href="supr?id=<%= charge.getId() %>">
+                                  <img style="width: 17px;height: 17px;" src="${pageContext.request.contextPath}/assets/images/corbeille.png">
+                                </a>
+                              </td>
                           </tr>
                       <%
                       }

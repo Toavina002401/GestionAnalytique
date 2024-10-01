@@ -141,19 +141,28 @@
                         <tbody>
                           <tr>
                             <td>Total Usine</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>1 751 500</td>
+                            <td>92.40%</td>
+                            <td>309088.2353</td>
+                            <td>2 060 588</td>
                           </tr>
                           <tr>
-                            <td>Total plantation</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>Total Laboratoire</td>
+                            <td>144 000</td>
+                            <td>7.60%</td>
+                            <td>25411.76471</td>
+                            <td>165 412</td>
                           </tr>
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <td>Total Generale</td>
+                            <td>1 895 500</td>
+                            <td></td>
+                            <td>334500</td>
+                            <td>2 230 000</td>
+                          </tr>
+                        </tfoot>
                       <tfoot>
                       </tfoot>
                     </table>
