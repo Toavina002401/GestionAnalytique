@@ -13,13 +13,27 @@ import source.model.base.Connexion;
 public class Centre {
     private int id;
     private String libele;
+    private int idType;
 
     public Centre() {
 
     }
 
+    public void setIdType(int idType) {
+        this.idType = idType;
+    }
+
+    public int getIdType() {
+        return idType;
+    }
+
     public Centre(String libele) {
         this.setLibele(libele);
+    }
+
+    public Centre(String libele, int typeCentre) {
+        this.setLibele(libele);
+        this.setIdType(typeCentre);
     }
 
     public Centre(int id, String libele) {
@@ -75,9 +89,10 @@ public class Centre {
             conn.setAutoCommit(false); // Début de la transaction
 
             // Insertion dans la table centre
-            String sqlCentre = "INSERT INTO centre (libele) VALUES (?)";
+            String sqlCentre = "INSERT INTO centre (libele, id_type) VALUES (?, ?)";
             stmtCentre = conn.prepareStatement(sqlCentre, Statement.RETURN_GENERATED_KEYS);
             stmtCentre.setString(1, this.libele);
+            stmtCentre.setInt(2, this.idType);
             stmtCentre.executeUpdate();
 
             // Récupérer l'ID du nouveau centre inséré
@@ -235,6 +250,31 @@ public class Centre {
                 Centre centre = new Centre();
                 centre.setId(rs.getInt("id"));
                 centre.setLibele(rs.getString("libele"));
+                centre.setIdType(rs.getInt("id_type"));
+                centres.add(centre);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+        return centres;
+    }
+
+    public List<Centre> getAll(int idTypeCentre) throws Exception {
+        Connexion con = new Connexion();
+        List<Centre> centres = new ArrayList<>();
+        String sql = "SELECT * FROM centre where id_type = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setInt(1, idTypeCentre);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Centre centre = new Centre();
+                centre.setId(rs.getInt("id"));
+                centre.setLibele(rs.getString("libele"));
+                centre.setIdType(rs.getInt("id_type"));
                 centres.add(centre);
             }
             conn.close();
@@ -257,6 +297,32 @@ public class Centre {
                 Centre centre = new Centre();
                 centre.setId(rs.getInt("id"));
                 centre.setLibele(rs.getString("libele"));
+                centres.add(centre);
+            }
+            conn.close();
+        } catch (SQLException e) {
+            conn.close();
+            throw e;
+        }
+        return centres;
+    }
+
+    public List<Centre> getByIdType(int idType) throws Exception {
+        Connexion con = new Connexion();
+        List<Centre> centres = new ArrayList<>();
+        String sql = "SELECT * FROM centre where id_type = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+
+            stmt.setInt(1, idType);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Centre centre = new Centre();
+                centre.setId(rs.getInt("id"));
+                centre.setLibele(rs.getString("libele"));
+                centre.setIdType(rs.getInt("id_type"));
                 centres.add(centre);
             }
             conn.close();

@@ -126,8 +126,15 @@
                     <h4 class="card-title">Insertion centre</h4>
                     <form class="forms-sample" action="ajoutNouveauCentre" method="get">
                         <div class="form-group">
-                        <label for="centreAjout">Libelé</label>
-                        <input type="text" class="form-control" name="centreAjout" id="centreAjout" placeholder="libele">
+                          <label for="centreAjout">Libelé</label>
+                          <input type="text" class="form-control" name="centreAjout" id="centreAjout" placeholder="libele">
+                        </div>
+                        <div class="form-group">
+                          <label for="centreAjout">Type</label>
+                          <select name="typeCentre" id="" class="form-control" required>
+                            <option value="2" selected>Operationnel</option>
+                            <option value="1">Structurel</option>
+                          </select>
                         </div>
                         
                         <button type="submit" class="btn btn-primary mr-2 col-md-3" >Valider</button>

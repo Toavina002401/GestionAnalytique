@@ -12,8 +12,10 @@ INSERT INTO unite_oeuvre (libele) VALUES ('Loyer Mensuel');
 INSERT INTO unite_oeuvre (libele) VALUES ('Heure');
 INSERT INTO unite_oeuvre (libele) VALUES ('Metre Carre');
 
+INSERT INTO type_centre (id, libele) VALUES(1, 'Structurel');
+INSERT INTO type_centre (id, libele) VALUES(2, 'Operationnel');
 
 
-INSERT INTO centre (libele) VALUES ('Centre Administratif');
-INSERT INTO centre (libele) VALUES ('Centre de Production (Usine)');
-INSERT INTO centre (libele) VALUES ('Centre de Test (Laboratoire)');
+INSERT INTO centre (libele, id_type) VALUES ('Centre Administratif', 1);
+INSERT INTO centre (libele, id_type) VALUES ('Centre de Production (Usine)', 2);
+INSERT INTO centre (libele, id_type) VALUES ('Centre de Test (Laboratoire)', 2);

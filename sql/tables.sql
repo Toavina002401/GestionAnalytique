@@ -1,12 +1,19 @@
-DROP DATABASE gestion_analytique;
+DROP DATABASE IF EXISTS gestion_analytique;
 
 CREATE DATABASE gestion_analytique;
 
 USE gestion_analytique;
 
+CREATE TABLE IF NOT EXISTS type_centre(
+    id INTEGER AUTO_INCREMENT,
+    libele VARCHAR(255),
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE IF NOT EXISTS centre(
     id INTEGER AUTO_INCREMENT,
     libele VARCHAR(255),
+    id_type INTEGER REFERENCES type_centre(id),
     PRIMARY KEY(id)
 );
 
@@ -33,3 +40,5 @@ CREATE TABLE centre_charge(
     pourcentage DECIMAL(5,2),
     PRIMARY KEY(id)
 );
+
+

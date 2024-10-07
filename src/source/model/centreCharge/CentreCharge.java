@@ -21,7 +21,7 @@ public class CentreCharge {
     public CentreCharge() {
     }
 
-    public CentreCharge(int idCentre, int idCharge, double prix, double pourcentage) throws Exception{
+    public CentreCharge(int idCentre, int idCharge, double prix, double pourcentage) throws Exception {
         this.setCentre(idCharge);
         this.setCharge(idCharge);
         this.setPrix(prix);
@@ -193,16 +193,16 @@ public class CentreCharge {
     public double[] getSommePrixParCentre(char variable) throws Exception {
         Connexion con = new Connexion();
         String sql = "SELECT SUM(cc.prix) AS somme_prix " +
-                    "FROM centre_charge cc " +
-                    "JOIN charge ch ON cc.id_charge = ch.id " +
-                    "WHERE ch.nature = ? " +
-                    "GROUP BY cc.id_centre";
-        
+                "FROM centre_charge cc " +
+                "JOIN charge ch ON cc.id_charge = ch.id " +
+                "WHERE ch.nature = ? " +
+                "GROUP BY cc.id_centre";
+
         Connection conn = con.dbConnect();
         PreparedStatement stmt = conn.prepareStatement(sql);
-        
+
         List<Double> prixList = new ArrayList<>();
-        
+
         try {
             stmt.setString(1, String.valueOf(variable));
             ResultSet rs = stmt.executeQuery();
@@ -217,7 +217,7 @@ public class CentreCharge {
 
         // Vérification de la taille de la liste avant conversion
         if (prixList.isEmpty()) {
-            return new double[Centre.getAllStatic().size()]; 
+            return new double[Centre.getAllStatic().size()];
         }
 
         double[] prixArray = new double[prixList.size()];
@@ -242,6 +242,5 @@ public class CentreCharge {
             conn.close();
         }
     }
-
 
 }
