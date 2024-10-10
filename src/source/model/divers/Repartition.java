@@ -119,7 +119,7 @@ public class Repartition {
         double seuil = totalCoutTotal / quantite;
         double valeurAjouter = seuil * 0.02;
         double pu = seuil + valeurAjouter;
-        double benefice = (seuil + valeurAjouter) * quantite; 
+        double benefice = valeurAjouter * quantite; 
 
         Map<String, Object> reponse = new HashMap<>();
         reponse.put("nomStructurel", nomStructurel);

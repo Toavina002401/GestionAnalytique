@@ -88,7 +88,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="repartition?quantite=100">
+            <a class="nav-link" href="repartition">
               <i class="icon-paper menu-icon"></i>
               <span class="menu-title">Répartition</span>
             </a>
