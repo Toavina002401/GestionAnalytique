@@ -41,4 +41,6 @@ CREATE TABLE centre_charge(
     PRIMARY KEY(id)
 );
 
+ALTER TABLE centre add COLUMN est_initial BOOLEAN DEFAULT false;
+
 

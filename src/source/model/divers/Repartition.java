@@ -69,7 +69,7 @@ public class Repartition {
         this.cle = cle;
     }
 
-    public Map<String, Object> calculerCles(int idTypeCentre,int ... qt) throws Exception {
+    public Map<String, Object> calculerCles(int idTypeCentre, int... qt) throws Exception {
         Centre centre = new Centre();
 
         List<Repartition> listeRepartition = new ArrayList<>();
@@ -114,12 +114,12 @@ public class Repartition {
         }
         double quantite = 100000;
         if (qt.length > 0) {
-            quantite = qt[0];
+            quantite = qt[0] - (qt[0] * 0.02);
         }
         double seuil = totalCoutTotal / quantite;
         double valeurAjouter = seuil * 0.02;
         double pu = seuil + valeurAjouter;
-        double benefice = valeurAjouter * quantite; 
+        double benefice = valeurAjouter * quantite;
 
         Map<String, Object> reponse = new HashMap<>();
         reponse.put("nomStructurel", nomStructurel);
@@ -132,14 +132,36 @@ public class Repartition {
         reponse.put("valeurAjouter", valeurAjouter);
         reponse.put("totalBenefice", benefice);
         reponse.put("pu", pu);
-        
-        
+        // reponse.put("cout_initial", this.calculerCoutInitial());
 
         return reponse;
 
     }
 
-    
+    public double calculerCoutInitial() throws Exception{
+        Connexion con = new Connexion();
+        String sql = "SELECT SUM(prix) AS somme " +
+                "FROM centre_charge " +
+                "JOIN centre ON centre.id = centre_charge.id " +
+                "WHERE est_initial = true";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+
+        double reponse = 0;
+
+        try {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                // prixList.add(rs.getDouble("somme_prix"));
+                reponse = rs.getDouble("somme");
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+        return reponse;
+    }
 
     public void sommeCentreParType(int idTypeCentre) {
     }

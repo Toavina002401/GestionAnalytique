@@ -136,6 +136,10 @@
                             <option value="1">Structurel</option>
                           </select>
                         </div>
+                        <div class="form-group">
+                          <label for="centreAjout">Est cout initial</label>
+                          <input type="checkbox" name="est_intial">
+                        </div>
                         
                         <button type="submit" class="btn btn-primary mr-2 col-md-3" >Valider</button>
                     </form>

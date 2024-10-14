@@ -184,10 +184,14 @@
           </div>
 
           <form action="repart" method="get">
-            <div class="form-group col-md-5">
-              <label for="centreAjout">Quantite:</label>
-              <input type="number" class="form-control" name="quantite" placeholder="libele">
-              <button type="submit" class="btn btn-primary" >Valider</button>
+            <div class="form-row align-items-center">
+              <div class="form-group col-md-8">
+                <label for="centreAjout">Quantité de blé :</label>
+                <input type="number" class="form-control" name="quantite" placeholder="Quantité">
+              </div>
+              <div class="form-group col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Valider</button>
+              </div>
             </div>
           </form>
 
@@ -217,7 +221,7 @@
                         </tr>
 
                         <tr>
-                          <th>Quantite</th>
+                          <th>Quantite de farine obtenu</th>
                           <td><%= data.get("quantite") %></td>
                         </tr>
                         <tr style="background-color: rgb(127, 202, 156);">
