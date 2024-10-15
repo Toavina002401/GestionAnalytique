@@ -140,42 +140,6 @@
                   </p>
                   <div class="table-responsive">
                     <table class="table table-bordered">
-<<<<<<< HEAD
-                        <thead>
-                          <tr>
-                              <th>Repartition ADM/DISTR</th>
-                              <th>Cout direct</th>
-                              <th>Cles</th>
-                              <th>ADM/DISTR</th>
-                              <th>Cout total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Total Usine</td>
-                            <td></td>
-                            <td>92.40%</td>
-                            <td>309088.2353</td>
-                            <td>2 060 588</td>
-                          </tr>
-                          <tr>
-                            <td>Total Laboratoire</td>
-                            <td>144 000</td>
-                            <td>7.60%</td>
-                            <td>25411.76471</td>
-                            <td>165 412</td>
-                          </tr>
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <td>Total Generale</td>
-                            <td>1 895 500</td>
-                            <td></td>
-                            <td>334500</td>
-                            <td>2 230 000</td>
-                          </tr>
-                        </tfoot>
-=======
                       <thead>
                         <tr>
                           <th>Repartition <%= data.get("nomStructurel") %></th>
@@ -209,9 +173,6 @@
                           <td><%= data.get("totalARepartir") %></td>
                           <td><%= data.get("totalCoutTotal") %></td>
                         </tr>
-                      </tfoot>
->>>>>>> ffe5638b74bd05ee10957870df00d8fc6daf4226
-                      <tfoot>
                       </tfoot>
                     </table>
                   </div>
