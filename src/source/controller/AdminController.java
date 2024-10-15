@@ -233,4 +233,21 @@ public class AdminController {
         return mav;
     }
 
+
+    @GetMapping("/modif")
+    public ModelAndView modifier(@RequestParam("id") int idCharge) throws Exception{
+        Charge charge = new Charge();
+        charge.getById(idCharge);
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        UniteOeuvre uniteOeuvre = new UniteOeuvre();
+        List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
+        ModelAndView mav = new ModelAndView("insertion");
+        mav.addObject("charge", charge);
+        mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
+        mav.addObject("listeCentre", listeCentre);
+        return mav;
+    }
+
+
 }
