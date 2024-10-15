@@ -109,15 +109,14 @@ public class CentreCharge {
 
     public boolean update() throws Exception {
         Connexion con = new Connexion();
-        String sql = "UPDATE centre_charge SET id_centre = ?, id_charge = ?, prix = ?, pourcentage = ? WHERE id = ?";
+        String sql = "UPDATE centre_charge SET prix = ?, pourcentage = ? WHERE id_charge = ? and id_centre= ?";
         Connection conn = con.dbConnect();
         PreparedStatement stmt = conn.prepareStatement(sql);
         try {
-            stmt.setInt(1, this.centre.getId());
-            stmt.setInt(2, this.charge.getId());
-            stmt.setDouble(3, this.prix);
-            stmt.setDouble(4, this.pourcentage);
-            stmt.setInt(5, this.id);
+            stmt.setInt(4, this.centre.getId());
+            stmt.setInt(3, this.charge.getId());
+            stmt.setDouble(1, this.prix);
+            stmt.setDouble(2, this.pourcentage);
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;
         } catch (SQLException e) {

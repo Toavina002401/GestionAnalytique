@@ -141,7 +141,7 @@
                         <tbody>
                           <tr>
                             <td>Total Usine</td>
-                            <td>1 751 500</td>
+                            <td></td>
                             <td>92.40%</td>
                             <td>309088.2353</td>
                             <td>2 060 588</td>
