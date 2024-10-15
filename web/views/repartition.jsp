@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*,source.model.charge.*,source.model.centreCharge.*" %>
+<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*,source.model.charge.*,source.model.centreCharge.*, source.model.divers.*" %>
 
+<% 
+  Map<String, Object> data = (Map<String, Object>) request.getAttribute("data");
+  List<Repartition> listeRepartition = (List<Repartition>) data.get("listeRepartition");
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,15 +27,18 @@
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/logo.png" />
 
 
-  
+
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/assets/images/logo_long.png" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="${pageContext.request.contextPath}"><img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="${pageContext.request.contextPath}"><img
+            src="${pageContext.request.contextPath}/assets/images/logo_long.png" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="${pageContext.request.contextPath}"><img
+            src="${pageContext.request.contextPath}/assets/images/logo.png" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -53,12 +60,16 @@
         <div id="theme-settings" class="settings-panel">
           <i class="settings-close ti-close"></i>
           <p class="settings-heading">Mode</p>
-          <div class="sidebar-bg-options selected" id="sidebar-light-theme"><div class="img-ss rounded-circle bg-light border mr-3"></div>Sombre</div>
-          <div class="sidebar-bg-options" id="sidebar-dark-theme"><div class="img-ss rounded-circle bg-dark border mr-3"></div>Clair</div>
+          <div class="sidebar-bg-options selected" id="sidebar-light-theme">
+            <div class="img-ss rounded-circle bg-light border mr-3"></div>Sombre
+          </div>
+          <div class="sidebar-bg-options" id="sidebar-dark-theme">
+            <div class="img-ss rounded-circle bg-dark border mr-3"></div>Clair
+          </div>
         </div>
       </div>
 
-<!-- MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
+      <!-- MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -95,7 +106,7 @@
           </li>
         </ul>
       </nav>
-<!-- FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
+      <!-- FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
 
 
 
@@ -106,7 +117,7 @@
       <div class="main-panel">
 
 
-<!-- CONTENU  ------------------------------------------------------------------------------------------------------>
+        <!-- CONTENU  ------------------------------------------------------------------------------------------------------>
         <div class="content-wrapper">
           <div class="row">
             <div class="col-md-12 grid-margin">
@@ -123,12 +134,13 @@
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Tableau de répartition pour le production et la distrubition</h4>
+                  <h4 class="card-title">Tableau de répartition </h4>
                   <p class="card-description">
                     production <code> Far'in Company</code>
                   </p>
                   <div class="table-responsive">
                     <table class="table table-bordered">
+<<<<<<< HEAD
                         <thead>
                           <tr>
                               <th>Repartition ADM/DISTR</th>
@@ -163,6 +175,42 @@
                             <td>2 230 000</td>
                           </tr>
                         </tfoot>
+=======
+                      <thead>
+                        <tr>
+                          <th>Repartition <%= data.get("nomStructurel") %></th>
+                          <th>Cout direct</th>
+                          <th>Cles</th>
+                          <th><%= data.get("nomStructurel") %></th>
+                          <th>Cout total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% 
+                          for (Repartition rep : listeRepartition) {
+                        %>
+                            <tr>
+                              <td>Total <%= rep.getNomCentre() %></td>
+                              <td><%= rep.getCoutDirecte() %></td>
+                              <td><%= rep.getCle() %>%</td>
+                              <td><%= rep.getRepartition() %></td>
+                              <td><%= rep.getCoutTotal() %></td>
+                            </tr>
+                        <% 
+                          }
+                        %>
+                        
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>Total Generale</td>
+                          <td><%= data.get("totalCoutDirecte") %></td>
+                          <td> - </td>
+                          <td><%= data.get("totalARepartir") %></td>
+                          <td><%= data.get("totalCoutTotal") %></td>
+                        </tr>
+                      </tfoot>
+>>>>>>> ffe5638b74bd05ee10957870df00d8fc6daf4226
                       <tfoot>
                       </tfoot>
                     </table>
@@ -172,10 +220,76 @@
             </div>
           </div>
 
+          <form action="repart" method="get">
+            <div class="form-row align-items-center">
+              <div class="form-group col-md-8">
+                <label for="centreAjout">Quantité de blé :</label>
+                <input type="number" class="form-control" name="quantite" placeholder="Quantité">
+              </div>
+              <div class="form-group col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Valider</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="row"></div>
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Cout du KG de farine </h4>
+                  
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Unite</th>
+                          <td>KG</td>
+                        </tr>
+                        <% for(Repartition rep : listeRepartition) { %>
+                          <tr>
+                            <th><%= rep.getNomCentre() %></th>
+                            <td><%= rep.getCoutTotal() %></td>
+                          </tr>
+
+                        <% } %>
+                        <tr>
+                          <th>COUT TOTAUX</th>
+                          <td><%= data.get("totalCoutTotal") %></td>
+                        </tr>
+
+                        <tr>
+                          <th>Quantite de farine obtenu</th>
+                          <td><%= data.get("quantite") %></td>
+                        </tr>
+                        <tr style="background-color: rgb(127, 202, 156);">
+                          <th>COUT DU KG de farine</th>
+                          <td><%= data.get("seuil") %></td>
+                        </tr>
+                        <tr>
+                          <th>Valeur ajouter</th>
+                          <td><%= data.get("valeurAjouter") %></td>
+                        </tr>
+                        <tr>
+                          <th>Prix unitaire</th>
+                          <td><%= data.get("pu") %></td>
+                        </tr>
+                        <tr style="background-color: rgb(83, 243, 144);">
+                          <th>TOTAL benefice</th>
+                          <td><%= data.get("totalBenefice") %></td>
+                        </tr>
+                      </thead>
+                      
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
         </div>
-<!--FIN MENU SIDEBAR ------------------------------------------------------------------------------------------------------>
-      
+        <!--FIN CONTENU ------------------------------------------------------------------------------------------------------>
+
 
 
 
@@ -185,7 +299,7 @@
 
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
+        <!-- <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
               Copyright © 2024. <a>Far'in</a> - Tous droits réservés.
@@ -194,14 +308,14 @@
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
               Distribué par Far'in
-            </span> 
+            </span>
           </div>
-        </footer>
-        
+        </footer> -->
+
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
-    </div>   
+    </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
@@ -233,4 +347,3 @@
 </body>
 
 </html>
-

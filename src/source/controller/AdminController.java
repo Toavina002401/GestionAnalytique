@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,12 +13,13 @@ import source.model.unite.UniteOeuvre;
 import source.model.centre.Centre;
 import source.model.centreCharge.CentreCharge;
 import source.model.charge.Charge;
+import source.model.divers.Repartition;
 
 @Controller
 public class AdminController {
 
     @GetMapping("/")
-    public ModelAndView index() throws Exception{
+    public ModelAndView index() throws Exception {
         Charge charge = new Charge();
         List<Charge> allCharge = charge.getAll();
         CentreCharge centreCharge = new CentreCharge();
@@ -36,13 +38,13 @@ public class AdminController {
     }
 
     @GetMapping("/changeDash")
-    public ModelAndView changeDash(){
+    public ModelAndView changeDash() {
         ModelAndView mav = new ModelAndView("dashboard");
         return mav;
     }
 
     @GetMapping("/inserCharge")
-    public ModelAndView insertionCharge() throws Exception{
+    public ModelAndView insertionCharge() throws Exception {
         Centre centre = new Centre();
         List<Centre> listeCentre = centre.getAll();
         UniteOeuvre uniteOeuvre = new UniteOeuvre();
@@ -54,14 +56,15 @@ public class AdminController {
     }
 
     @GetMapping("/inserCentre")
-    public ModelAndView insertionCentre(){
+    public ModelAndView insertionCentre() {
         ModelAndView mav = new ModelAndView("centre");
         return mav;
     }
 
     @GetMapping("/ajoutNouveauCentre")
-    public ModelAndView ajoutCentre(@RequestParam("centreAjout") String centreAjout) throws Exception{
-        Centre centre = new Centre(centreAjout);
+    public ModelAndView ajoutCentre(@RequestParam("centreAjout") String centreAjout,
+            @RequestParam("typeCentre") int typeCentre) throws Exception {
+        Centre centre = new Centre(centreAjout, typeCentre);
         centre.create();
         UniteOeuvre uniteOeuvre = new UniteOeuvre();
         List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
@@ -72,9 +75,8 @@ public class AdminController {
         return mav;
     }
 
-
     @GetMapping("/ajoutUnite")
-    public ModelAndView ajoutUnite(@RequestParam("uniteAjout") String uniteAjout) throws Exception{
+    public ModelAndView ajoutUnite(@RequestParam("uniteAjout") String uniteAjout) throws Exception {
         UniteOeuvre uniteOeuvre = new UniteOeuvre(uniteAjout);
         uniteOeuvre.create();
         List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
@@ -86,10 +88,8 @@ public class AdminController {
         return mav;
     }
 
-
-
     @GetMapping("/addCharge")
-    public ModelAndView ajouterCharge(HttpServletRequest request)throws Exception {
+    public ModelAndView ajouterCharge(HttpServletRequest request) throws Exception {
         String rubrique = request.getParameter("rubrique");
         String unite = request.getParameter("unite");
         String nature = request.getParameter("nature");
@@ -192,12 +192,10 @@ public class AdminController {
             mav.addObject("reponse", reponse);
             return mav;
         }
-
     }
 
-
     @GetMapping("repartition")
-    public ModelAndView repartition() throws Exception{
+    public ModelAndView repartition() throws Exception {
         Charge charge = new Charge();
         List<Charge> allCharge = charge.getAll();
         CentreCharge centreCharge = new CentreCharge();
@@ -206,8 +204,8 @@ public class AdminController {
         List<Centre> listeCentre = centre.getAll();
         double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
         double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
-        double totalCoutDeProduction = totalVariableCentre[1] + totalFixeCentre[1];
-        double totalCoutDeLaboratoire = totalVariableCentre[2] + totalFixeCentre[2];
+        Repartition rep = new Repartition();
+        Map<String, Object> data = rep.calculerCles(2);
 
         ModelAndView mav = new ModelAndView("repartition");
         mav.addObject("allCharge", allCharge);
@@ -215,18 +213,41 @@ public class AdminController {
         mav.addObject("listeCentre", listeCentre);
         mav.addObject("totalVariableCentre", totalVariableCentre);
         mav.addObject("totalFixeCentre", totalFixeCentre);
+        mav.addObject("data", data);
         return mav;
     }
 
+    @GetMapping("repart")
+    public ModelAndView repart(@RequestParam("quantite") int quantite) throws Exception{
+        Charge charge = new Charge();
+        List<Charge> allCharge = charge.getAll();
+        CentreCharge centreCharge = new CentreCharge();
+        List<CentreCharge> allCentreCharge = centreCharge.getAll();
+        Centre centre = new Centre();
+        List<Centre> listeCentre = centre.getAll();
+        double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
+        double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
+
+        Repartition rep = new Repartition();
+        Map<String, Object> data = rep.calculerCles(2, quantite);
+
+        ModelAndView mav = new ModelAndView("repartition");
+        mav.addObject("allCharge", allCharge);
+        mav.addObject("allCentreCharge", allCentreCharge);
+        mav.addObject("listeCentre", listeCentre);
+        mav.addObject("totalVariableCentre", totalVariableCentre);
+        mav.addObject("totalFixeCentre", totalFixeCentre);
+        mav.addObject("data", data);
+        return mav;
+    }
 
     @GetMapping("/supr")
-    public ModelAndView supprimer(@RequestParam("id") int idCharge) throws Exception{
+    public ModelAndView supprimer(@RequestParam("id") int idCharge) throws Exception {
         CentreCharge supCentreCharge = new CentreCharge();
         supCentreCharge.deleteFromCharge(idCharge);
         Charge supCharge = new Charge();
         supCharge.getById(idCharge);
         supCharge.delete();
-
 
         Charge charge = new Charge();
         List<Charge> allCharge = charge.getAll();
