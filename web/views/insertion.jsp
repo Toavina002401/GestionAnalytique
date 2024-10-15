@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*" %>
+<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*, source.model.charge.*" %>
 <%
     List<UniteOeuvre> uniteOeuvre = (List<UniteOeuvre>)request.getAttribute("listeUniteOeuvre");
     List<Centre> centres = (List<Centre>)request.getAttribute("listeCentre");
+    Charge charge = (Charge) request.getAttribute("charge");
 %>
 
 <!DOCTYPE html>
@@ -128,9 +129,14 @@
                       <div class="card-body">
                         <h4 class="card-title">Insertion charge</h4>
                         <form class="forms-sample"  action="addCharge" method="get">
+
+                            <% if (charge != null) { %>
+                              <input type="hidden" name="idCharge" value="<%= charge.getId() %>">
+                            <% } %>
+
                             <div class="form-group">
                               <label for="rubrique">Rubrique</label>
-                              <input type="text" class="form-control" name="rubrique" id="rubrique" placeholder="rubrique" required>
+                              <input type="text" class="form-control" name="rubrique" id="rubrique" placeholder="rubrique" value='<%= (charge != null) ? charge.getRubrique() : "" %>' required>
                             </div>
                             
                             <div class="form-group">
@@ -138,7 +144,13 @@
                                 <div class="input-group">
                                     <select class="form-control" id="unite" name="unite">
                                         <% for (UniteOeuvre unite : uniteOeuvre) { %>
-                                          <option value="<%= unite.getId() %>"><%= unite.getLibele() %></option>
+                                          <option value="<%= unite.getId() %>"
+                                            <% if (charge != null && charge.getUniteOeuvre().getId() == unite.getId()) { %>
+                                              selected
+                                            <% } %>
+                                          >  
+                                            <%= unite.getLibele() %>
+                                          </option>
                                         <% } %>
                                     </select>
                                   <div class="input-group-append">
@@ -152,13 +164,21 @@
                                 <div class="row">
                                     <div class="form-check col-md-3 ml-3">
                                         <label class="form-check-label">
-                                          <input type="radio" class="form-check-input" name="nature" id="fixe" value="V">
+                                          <input type="radio" class="form-check-input" name="nature" id="fixe" value="V"
+                                            <% if (charge != null && charge.getNature() == 'V') { %>
+                                              checked
+                                            <% } %>
+                                          >
                                           Variable
                                         </label>
                                       </div>
                                       <div class="form-check col-md-3">
                                         <label class="form-check-label">
-                                          <input type="radio" class="form-check-input" name="nature" id="variable" value="F" checked>
+                                          <input type="radio" class="form-check-input" name="nature" id="variable" value="F" 
+                                            <% if (charge != null && charge.getNature() == 'F') { %>
+                                              checked
+                                            <% } %>
+                                          >
                                           Fixe
                                         </label>
                                     </div>
@@ -168,7 +188,7 @@
                             <div class="form-group">
                                 <label for="prix">Montant</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="sommeTotal" placeholder="Entrez la somme totale" min="1"  name="prix" required>
+                                    <input type="number" class="form-control" id="sommeTotal"  placeholder="Entrez la somme totale" value='<%= (charge != null) ? charge.getPrix() : "" %>' min="1"  name="prix"  required>
                                 <div class="input-group-append">
                                     <button id="openModalBtnCentre" class="btn btn-md btn-primary" type="button">Répartir sur les centres</button>
                                 </div>
