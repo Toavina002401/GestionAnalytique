@@ -8,7 +8,7 @@ public class Connexion {
     public Connection dbConnect() throws Exception{
         String jdbcUrl = "jdbc:mysql://localhost:3306/gestion_analytique";
         String username = "root";
-        String password = "patrick";
+        String password = "";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

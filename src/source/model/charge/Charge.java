@@ -25,6 +25,7 @@ public class Charge {
         this.setRubrique(rubrique);
         this.setNature(nature);
         this.setUniteOeuvre(idUnite);
+        this.setPrix(prix);
     }
 
     public Charge(int id, String rubrique, double prix, char nature, UniteOeuvre unite) {
@@ -32,6 +33,7 @@ public class Charge {
         this.setRubrique(rubrique);
         this.setNature(nature);
         this.setUniteOeuvre(unite);
+        this.setPrix(prix);
     }
 
     public void getById(int id) throws Exception {
