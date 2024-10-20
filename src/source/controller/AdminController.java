@@ -94,69 +94,92 @@ public class AdminController {
         String unite = request.getParameter("unite");
         String nature = request.getParameter("nature");
         String prixname = request.getParameter("prix");
+        String idCharge = request.getParameter("idCharge");
 
         Centre newcentre = new Centre();
-        Charge newCharge = new Charge(1, rubrique, Double.parseDouble(prixname), nature.charAt(0), Integer.parseInt(unite));
-        
-        double prixTotal = 0;
-        List<Centre> centres = newcentre.getAll();
-        for (Centre centre : centres) {
-            String prix = request.getParameter(centre.getId() + "_prix");
-            if (prix == null) {
-                break;
+
+        if (idCharge != null) {
+            Charge newCharge = new Charge(Integer.parseInt(idCharge), rubrique, Double.parseDouble(prixname), nature.charAt(0), Integer.parseInt(unite));
+            
+            double prixTotal = 0;
+            List<Centre> centres = newcentre.getAll();
+            for (Centre centre : centres) {
+                String prix = request.getParameter(centre.getId() + "_prix");
+                if (prix == null) { break; }
+                prixTotal = prixTotal + Double.parseDouble(prix);
             }
-            prixTotal = prixTotal + Double.parseDouble(prix);
-        }
+    
+            if (prixTotal != 0) { newCharge.setPrix(prixTotal); }
+    
+            newCharge.update();
 
-        if (prixTotal != 0) {
-            newCharge.setPrix(prixTotal);
-        }
 
-        newCharge.create();
+            double totalPourcentage = 0;
+            Charge vaovao = Charge.getById(rubrique);
+    
+            for (Centre centre : centres) {
+                String prix = request.getParameter(centre.getId() + "_prix");
+                if (prix == null) { 
+                    CentreCharge cc = new CentreCharge();
+                    cc.deleteByIdCharge(Integer.parseInt(idCharge));
+                    break; 
+                }
 
-        double totalPourcentage = 0;
-        boolean isDirect = false;
-        Charge vaovao = Charge.getById(rubrique);
-        Centre getDirect = new Centre();
-
-        for (Centre centre : centres) {
-            String prix = request.getParameter(centre.getId() + "_prix");
-            if (prix == null) {
-                break;
+                String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
+                totalPourcentage = totalPourcentage + Double.parseDouble(pourcentage);
+    
+                CentreCharge newCentreCharge = new CentreCharge(0, centre, vaovao, Double.parseDouble(prix),Double.parseDouble(pourcentage));
+                boolean change = newCentreCharge.updateByIdChargeIdCentre();
+                if (change == false) {
+                    newCentreCharge.create();
+                }
             }
-            String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
-            totalPourcentage = totalPourcentage + Double.parseDouble(pourcentage);
 
-            if (Double.parseDouble(pourcentage) == 100) {
-                isDirect = true;
-                getDirect = centre;
-            }
-            CentreCharge newCentreCharge = new CentreCharge(0, centre, vaovao, Double.parseDouble(prix),
-                    Double.parseDouble(pourcentage));
-            newCentreCharge.create();
-        }
-
-        String reponse = "Le rubrique du nom " + rubrique + " est une charge ";
-        if (totalPourcentage == 0) {
-            reponse += "non incorporable car tous les pourcentages pour chaque centre sont egale a 0% .";
         } else {
-            reponse += "incorporable mais c'est aussi une charge ";
-            if (isDirect) {
-                reponse += " direct car sont pourcentage est de 100% dans le centre " + getDirect.getLibele()
-                        + " avec une prix de " + prixname + " AR .";
-            } else {
-                reponse += "indirect car les pourcentage sont partagée par plus de 2 centre";
+            Charge newCharge = new Charge(1, rubrique, Double.parseDouble(prixname), nature.charAt(0), Integer.parseInt(unite));
+            double prixTotal = 0;
+
+            List<Centre> centres = newcentre.getAll();
+            for (Centre centre : centres) {
+                String prix = request.getParameter(centre.getId() + "_prix");
+                if (prix == null) { break; }
+                prixTotal = prixTotal + Double.parseDouble(prix);
             }
+    
+            if (prixTotal != 0) { newCharge.setPrix(prixTotal); }
+    
+            newCharge.create();
+    
+            double totalPourcentage = 0;
+            Charge vaovao = Charge.getById(rubrique);
+    
+            for (Centre centre : centres) {
+                String prix = request.getParameter(centre.getId() + "_prix");
+                if (prix == null) { break; }
+
+                String pourcentage = request.getParameter(centre.getId() + "_pourcentage");
+                totalPourcentage = totalPourcentage + Double.parseDouble(pourcentage);
+    
+                CentreCharge newCentreCharge = new CentreCharge(0, centre, vaovao, Double.parseDouble(prix),Double.parseDouble(pourcentage));
+                newCentreCharge.create();
+            }
+    
         }
 
+        Charge charge = new Charge();
+        List<Charge> allCharge = charge.getAll();
+        CentreCharge centreCharge = new CentreCharge();
+        List<CentreCharge> allCentreCharge = centreCharge.getAll();
         Centre centre = new Centre();
         List<Centre> listeCentre = centre.getAll();
-        UniteOeuvre uniteOeuvre = new UniteOeuvre();
-        List<UniteOeuvre> listeUniteOeuvre = uniteOeuvre.getAll();
-        ModelAndView mav = new ModelAndView("insertion");
-        mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
+        double[] totalVariableCentre = centreCharge.getSommePrixParCentre('V');
+        double[] totalFixeCentre = centreCharge.getSommePrixParCentre('F');
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("allCharge", allCharge);
+        mav.addObject("allCentreCharge", allCentreCharge);
         mav.addObject("listeCentre", listeCentre);
-        mav.addObject("reponse", reponse);
+        mav.addObject("totalVariableCentre", totalVariableCentre);
+        mav.addObject("totalFixeCentre", totalFixeCentre);
         return mav;
     }
 
@@ -238,6 +261,10 @@ public class AdminController {
     public ModelAndView modifier(@RequestParam("id") int idCharge) throws Exception{
         Charge charge = new Charge();
         charge.getById(idCharge);
+
+        CentreCharge cc = new CentreCharge();
+        List<CentreCharge> centreCharge = cc.getByIdCharge(idCharge);
+
         Centre centre = new Centre();
         List<Centre> listeCentre = centre.getAll();
         UniteOeuvre uniteOeuvre = new UniteOeuvre();
@@ -246,6 +273,7 @@ public class AdminController {
         mav.addObject("charge", charge);
         mav.addObject("listeUniteOeuvre", listeUniteOeuvre);
         mav.addObject("listeCentre", listeCentre);
+        mav.addObject("listeCentreCharge", centreCharge);
         return mav;
     }
 

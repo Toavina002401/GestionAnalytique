@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*, source.model.charge.*" %>
+<%@ page import="java.util.*,source.model.unite.*,source.model.centre.*, source.model.charge.* ,source.model.centreCharge.*" %>
 <%
     List<UniteOeuvre> uniteOeuvre = (List<UniteOeuvre>)request.getAttribute("listeUniteOeuvre");
     List<Centre> centres = (List<Centre>)request.getAttribute("listeCentre");
     Charge charge = (Charge) request.getAttribute("charge");
+    List<CentreCharge> centreCharge = (List<CentreCharge>)request.getAttribute("listeCentreCharge");
 %>
 
 <!DOCTYPE html>
@@ -188,13 +189,32 @@
                             <div class="form-group">
                                 <label for="prix">Montant</label>
                                 <div class="input-group">
-                                    <input type="number" class="form-control" id="sommeTotal"  placeholder="Entrez la somme totale" value='<%= (charge != null) ? charge.getPrix() : "" %>' min="1"  name="prix"  required>
+                                    <input type="text" class="form-control" id="sommeTotal"  placeholder="Entrez la somme totale" value='<%= (charge != null) ? charge.getPrix() : "" %>' min="1"  name="prix"  required>
                                 <div class="input-group-append">
                                     <button id="openModalBtnCentre" class="btn btn-md btn-primary" type="button">Répartir sur les centres</button>
                                 </div>
                                 </div>
                             </div>
-                            <div id="pourcentagesCentres" class="mt-3 mb-3"></div>
+
+
+
+                            <div id="pourcentagesCentres" class="mt-3 mb-3">
+                              <% if(centreCharge != null) { %>
+                                  <h5>Répartition du montant par centre :</h5>
+                                  <% for (CentreCharge item : centreCharge) { %>
+                                    <div class="form-group"> 
+                                        <label for="  <%=item.getCentre().getId()%>_pourcentage"> <%=item.getCentre().getLibele()%> :<%=item.getPrix()%>   Ar</label> 
+                                        <div class="input-group"> 
+                                            <div class="input-group-prepend"> 
+                                                <span class="input-group-text">%</span> 
+                                            </div>
+                                            <input type="text" class="form-control" name="  <%=item.getCentre().getId()%>_pourcentage" id="  <%=item.getCentre().getId()%>_pourcentage" value="<%=item.getPourcentage()%>" readonly> 
+                                            <input type="hidden" value=" prixxxx " name="  <%=item.getCentre().getId()%>_prix"> 
+                                        </div>
+                                    </div>
+                              <%  }
+                                } %>
+                            </div>
                             
                             <button type="submit" class="btn btn-primary mr-2 col-md-3" >Valider</button>
                           </form>

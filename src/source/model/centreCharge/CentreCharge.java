@@ -243,4 +243,66 @@ public class CentreCharge {
         }
     }
 
+    public List<CentreCharge> getByIdCharge(int idCharge) throws Exception {
+        Connexion con = new Connexion();
+        List<CentreCharge> centreCharges = new ArrayList<>();
+        String sql = "SELECT * FROM centre_charge where id_charge = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setInt(1, idCharge);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                CentreCharge centreCharge = new CentreCharge();
+                centreCharge.setId(rs.getInt("id"));
+                centreCharge.setCentre(rs.getInt("id_centre"));
+                centreCharge.setCharge(rs.getInt("id_charge"));
+                centreCharge.setPrix(rs.getDouble("prix"));
+                centreCharge.setPourcentage(rs.getDouble("pourcentage"));
+                centreCharges.add(centreCharge);
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+        return centreCharges;
+    }
+
+    public boolean deleteByIdCharge(int idCharge) throws Exception {
+        Connexion con = new Connexion();
+        String sql = "DELETE FROM centre_charge WHERE id_charge = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setInt(1, idCharge);
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+    }
+
+
+    public boolean updateByIdChargeIdCentre() throws Exception {
+        Connexion con = new Connexion();
+        String sql = "UPDATE centre_charge SET prix = ?, pourcentage = ? WHERE id_charge = ? and id_centre = ?";
+        Connection conn = con.dbConnect();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        try {
+            stmt.setDouble(1, this.prix);
+            stmt.setDouble(2, this.pourcentage);
+            stmt.setInt(3, this.charge.getId());
+            stmt.setInt(4, this.centre.getId());
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            conn.close();
+        }
+    }
+
 }
